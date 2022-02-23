@@ -2,19 +2,22 @@ package main.problems;
 
 public class Problem273 {
     public String numberToWords(int num) {
+        if(num == 0) {
+            return "Zero";
+        }
         //System.out.println("Number to words on " + num);
         if(num < 100) {
             return helper(num);
         }
 
         String result = "";
-        int[] factors = {1000000, 1000, 100, 10, 1};
+        int[] factors = {1000000000, 1000000, 1000, 100, 1};
         int digit = 0;
         int factorIndex = 0;
         while(num > 0 && factorIndex < factors.length) {
             digit = (int) Math.floor(num / factors[factorIndex]);
             if(digit != 0) {
-                result = result + numberToWords(digit) + tensFactor(factorIndex);
+                result = result +" " + numberToWords(digit) + " " + tensFactor(factorIndex);
                 System.out.println(digit);
                 num = num - (factors[factorIndex] * digit);
             }
@@ -29,79 +32,79 @@ public class Problem273 {
         int modResult = digit % 10;
         switch ((int)Math.floor(digit / 10)) {
             case 2:
-                result = " twenty";
+                result = "Twenty";
                 break;
             case 3:
-                result =" thirty";
+                result =  "Thirty";
                 break;
             case 4:
-                result = " forty";
+                result = "Forty";
                 break;
             case 5:
-                result = " fifty";
+                result = "Fifty";
                 break;
             case 6:
-                result = " sixty";
+                result = "Sixty";
                 break;
             case 7:
-                result = " seventy";
+                result = "Seventy";
                 break;
             case 8:
-                result = " eighty";
+                result = "Eighty";
                 break;
             case 9:
-                result = " ninety";
+                result = "Ninety";
                 break;
             default:
                 return "";
         }
-        return (modResult == 0 ? result : result + numberToWords(modResult));
+        return (modResult == 0 ? result : result + " " + numberToWords(modResult));
 
     }
 
     private String helper(int num) {
-        if(num>20) {
+        if(num>=20) {
             return tensHelper(num);
         }
         switch (num) {
             case 1:
-               return "one";
+               return "One";
             case 2:
-                return "two";
+                return "Two";
             case 3:
-                return "three";
+                return "Three";
             case 4:
-                return "four";
+                return "Four";
             case 5:
-                return "five";
+                return "Five";
             case 6:
-                return "six";
+                return "Six";
             case 7:
-                return "seven";
+                return "Seven";
             case 8:
-                return "eight";
+                return "Eight";
             case 9:
-                return "nine";
+                return "Nine";
             case 10:
-                return "ten";
+                return "Ten";
             case 11:
-                return "eleven";
+                return "Eleven";
             case 12:
-                return "twelve";
+                return "Twelve";
             case 13:
-                return "thirteen";
+                return "Thirteen";
             case 14:
-                return "fourteen";
+                return "Fourteen";
             case 15:
-                return "fifteen";
+                return "Fifteen";
             case 16:
-                return "sixteen";
+                return "Sixteen";
             case 17:
-                return "seventeen";
+                return "Seventeen";
             case 18:
-                return "eighteen";
+                return "Eighteen";
             case 19:
-                return "nineteen";
+                return "Nineteen";
             default:
                 return "";
         }
@@ -109,12 +112,14 @@ public class Problem273 {
 
     public String tensFactor(int factorIndex) {
         switch (factorIndex) {
+            case 3:
+                return "Hundred";
             case 2:
-                return " hundred";
+                return "Thousand";
             case 1:
-                return " thousand";
+                return "Million";
             case 0:
-                return " million";
+                return "Billion";
             default:
                 return "";
         }
