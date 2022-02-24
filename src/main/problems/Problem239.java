@@ -1,6 +1,8 @@
 package main.problems;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Problem239 {
 
@@ -9,17 +11,20 @@ public class Problem239 {
         if(k == 1) {
             return nums;
         }
-        int[] maxes = new int[nums.length - k + 1];
+
         this.nums = nums;
-        int maxIndex = 0;
+//        ArrayList<Integer> maxes = new ArrayList<>();
+        int[] maxes = new int[(nums.length - k + 1)];
+        int maxIndex = 1;
         WindowCache cache = new WindowCache(k);
         for(int i = 0; i < k; i++) {
             cache.addLast(i);
         }
+        maxes[0] = nums[cache.peekFirst()];
         for(int i = k; i < nums.length; i++) {
-            cache.add(nums[i]);
+            cache.addLast(i);
+            maxes[maxIndex] = nums[cache.peekFirst()];
             maxIndex++;
-//            maxes[maxIndex]=cache.curMax;
         }
 
         return maxes;
@@ -27,22 +32,26 @@ public class Problem239 {
 
     class WindowCache extends ArrayDeque<Integer> {
         int maxSize = 0;
-        PriorityQueue<Integer> maxes;
+
         WindowCache(int maxSize) {
-            super();
+            super(maxSize);
             this.maxSize = maxSize;
         }
 
         @Override
         public void addLast(Integer integer) {
-            super.addLast(integer);
-            while (!isEmpty() && (nums[integer] > nums[getFirst()] || integer - maxSize > peekFirst())){
-                removeFirst();
-            }
-        }
+//            What the answer actually should be
+//            removeIf(i ->  nums[i] <= nums[integer] ||  i <= integer - maxSize);
 
-        private boolean ifRemoveOldest() {
-            return size() > maxSize;
+            while(!isEmpty() && peekFirst() <= integer - maxSize) {
+                pollFirst();
+            }
+
+            while(!isEmpty() && !(nums[peekLast()] > nums[integer]))
+                pollLast();
+
+
+            super.addLast(integer);
         }
     }
 }
